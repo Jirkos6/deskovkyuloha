@@ -118,7 +118,7 @@ public class Form extends JFrame{
 
         jMenuBar.add(menu);
         setJMenuBar(jMenuBar);
-
+        openItem.setMnemonic(KeyEvent.VK_F);
 
     }
 
