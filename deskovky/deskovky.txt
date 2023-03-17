@@ -1,0 +1,4 @@
+Piškvorky;false;2
+Šachy;true;2
+Dáma;false;1
+Monopoly;true;3
