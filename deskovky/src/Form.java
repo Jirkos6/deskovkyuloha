@@ -1,11 +1,16 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Form extends JFrame{
-    private JPanel panel;
+    private JPanel JPane;
+    private JMenuBar menuBar;
+    private JMenu menuFile;
+    private JMenu menuHelp;
+    private JMenuItem miOpenFile;
     private JTextField nazev;
     private JButton tlacitkoZpet;
     private JButton tlacitkoDalsi;
@@ -17,12 +22,11 @@ public class Form extends JFrame{
     private JRadioButton oblibenost3;
     private JCheckBox zakoupeno;
     private JSlider slider;
-    private JButton ukladaciTlacitko;
-    private JButton aktualizacniTlacitko;
     private ButtonGroup skupina;
     private int indexAktualniDeskovky = 0;
     private List<Deskovka> seznam = new ArrayList<>();
     private ZaverecnaUloha soubory = new ZaverecnaUloha();
+
 
     public Form() {
         skupina = new ButtonGroup();
@@ -31,12 +35,16 @@ public class Form extends JFrame{
         skupina.add(oblibenost3);
         seznam = soubory.ziskejSeznamDeskovekZeSouboru();
         nactiData(indexAktualniDeskovky);
+        initComponets();
+
+
         tlacitkoDalsi.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 aktualizujData();
                 indexAktualniDeskovky++;
                 nactiData(indexAktualniDeskovky);
+
             }
         });
         tlacitkoZpet.addActionListener(new ActionListener() {
@@ -47,19 +55,7 @@ public class Form extends JFrame{
                 nactiData(indexAktualniDeskovky);
             }
         });
-        ukladaciTlacitko.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                aktualizujData();
-                ulozData();
-            }
-        });
-        aktualizacniTlacitko.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nactiData(indexAktualniDeskovky);
-            }
-        });
+
     }
 
     public void nactiData(int index){
@@ -92,6 +88,10 @@ public class Form extends JFrame{
         slider.setValue(aktualniDeskovka.getOblibenost());
     }
 
+
+
+
+
     public void aktualizujData(){
         seznam = soubory.ziskejSeznamDeskovekZeSouboru();
         String nazevDeskovky = nazev.getText();
@@ -100,17 +100,43 @@ public class Form extends JFrame{
         Deskovka novaDeskovka = new Deskovka(nazevDeskovky, bylaZakoupena, oblibenost);
         seznam.set(indexAktualniDeskovky, novaDeskovka);
     }
+    private void initComponets(){
 
-    public void ulozData(){
-        soubory.zapisDoSouboru(seznam);
+        JMenuBar jMenuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("Menu");
+
+        JMenuItem openItem = new JMenuItem("Open");
+
+        menu.add(openItem);
+        menu.addSeparator();
+
+        JMenuItem clearData = new JMenuItem("Clear");
+
+
+        menu.add(clearData);
+
+        jMenuBar.add(menu);
+        setJMenuBar(jMenuBar);
+
+
     }
+
 
     public static void main(String[] args) {
         Form form = new Form();
-        form.setContentPane(form.panel);
         form.pack();
         form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         form.setVisible(true);
+        form.setContentPane(form.JPane);
+
+
+
+
+
+
+
+
 
     }
 }
